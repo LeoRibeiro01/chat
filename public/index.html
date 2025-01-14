@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <!-- Tela de Login -->
+    <div id="login">
+        <h2>Enter your name to join the chat</h2>
+        <form id="loginForm">
+            <input id="name" autocomplete="off" placeholder="Your name" required />
+            <button type="submit">Join Chat</button>
+        </form>
+    </div>
+
+    <!-- Tela de Salas -->
+    <div id="roomsScreen" style="display: none;">
+        <h3>Choose a room to join:</h3>
+        <ul id="roomList">
+            <!-- Lista de salas será populada dinamicamente -->
+        </ul>
+        <div id="privateRoomPasswordSection" style="display: none;">
+            <input type="password" id="privateRoomPassword" placeholder="Enter room password" />
+            <button id="joinPrivateRoom">Join Room</button>
+        </div>
+        <button id="createRoomButton">Create a New Room</button>
+    </div>
+
+    <!-- Tela de Chat -->
+    <div id="chatScreen" style="display: none;">
+        <ul id="messages"></ul>
+        <form id="form" action="">
+            <input id="input" autocomplete="off" /><button type="submit">Send</button>
+        </form>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        var socket = io();
+        const loginScreen = document.getElementById('login');
+        const roomsScreen = document.getElementById('roomsScreen');
+        const chatScreen = document.getElementById('chatScreen');
+        const loginForm = document.getElementById('loginForm');
+        const nameInput = document.getElementById('name');
+        const roomList = document.getElementById('roomList');
+        const privateRoomPasswordSection = document.getElementById('privateRoomPasswordSection');
+        const privateRoomPasswordInput = document.getElementById('privateRoomPassword');
+        const joinPrivateRoomButton = document.getElementById('joinPrivateRoom');
+        const createRoomButton = document.getElementById('createRoomButton');
+        const messagesList = document.getElementById('messages');
+        const input = document.getElementById('input');
+        let username;
+        let currentRoom = null;
+        let isPrivateRoom = false;
+
+        // Tela de Login
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            username = nameInput.value.trim();
+            if (username) {
+                loginScreen.style.display = 'none';
+                roomsScreen.style.display = 'block';
+                socket.emit('getRooms');  // Solicitar a lista de salas ao servidor
+            }
+        });
+
+        // Mostrar as salas disponíveis
+        socket.on('roomsList', (rooms) => {
+            roomList.innerHTML = '';  // Limpar a lista antes de popular
+            rooms.forEach(room => {
+                const li = document.createElement('li');
+                li.textContent = room.name;
+                li.onclick = () => joinRoom(room);
+                roomList.appendChild(li);
+            });
+        });
+
+        // Entrar em uma sala (pública ou privada)
+        function joinRoom(room) {
+            currentRoom = room.name;
+            if (room.isPrivate) {
+                // Se for uma sala privada, mostrar o campo para senha
+                isPrivateRoom = true;
+                privateRoomPasswordSection.style.display = 'block';
+                joinPrivateRoomButton.onclick = () => {
+                    const password = privateRoomPasswordInput.value.trim();
+                    socket.emit('joinPrivateRoom', { room: room.name, password });
+                };
+            } else {
+                // Se for uma sala pública, entra diretamente
+                socket.emit('joinRoom', { username, room: room.name });
+                roomsScreen.style.display = 'none';
+                chatScreen.style.display = 'block';
+            }
+        }
+
+        // Sala privada: erro de senha
+        socket.on('error', (message) => {
+            alert(message);
+        });
+
+        // Sala privada: entrou com sucesso
+        socket.on('joinedRoom', (room) => {
+            roomsScreen.style.display = 'none';
+            chatScreen.style.display = 'block';
+            currentRoom = room.name;
+            privateRoomPasswordSection.style.display = 'none';  // Esconder o campo de senha
+        });
+
+        // Salas criadas
+        createRoomButton.addEventListener('click', () => {
+            const roomName = prompt("Enter room name:");
+            const isPrivate = confirm("Is this room private?");
+            const password = isPrivate ? prompt("Enter a password for the room:") : null;
+            socket.emit('createRoom', { name: roomName, isPrivate, password });
+        });
+
+        // Enviar mensagem
+        document.getElementById('form').addEventListener('submit', (e) => {
+            e.preventDefault();  // Evitar o recarregamento da página
+            if (input.value) {
+                console.log('Sending message:', input.value); // Logar a mensagem
+                socket.emit('message', { username, room: currentRoom, message: input.value });
+                input.value = '';  // Limpar o campo de entrada
+            }
+        });
+
+        // Receber mensagem
+        socket.on('message', (data) => {
+            if (data.room === currentRoom) {
+                const li = document.createElement('li');
+                li.textContent = `${data.username}: ${data.message}`;
+
+                // Verifica se é o usuário atual para aplicar a classe de "minha mensagem"
+                if (data.username === username) {
+                    li.classList.add('my-message');
+                } else {
+                    li.classList.add('other-message');
+                }
+
+                messagesList.appendChild(li);
+            }
+        });
+    </script>
+</body>
+</html>

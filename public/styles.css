@@ -1,0 +1,92 @@
+body {
+    margin: 0;
+    padding-bottom: 3rem;
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+#messages {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    max-height: 400px;
+    overflow-y: scroll;
+}
+
+#messages li {
+    padding: 5px;
+    margin: 2px 0;
+    border-bottom: 1px solid #ffffff;
+}
+
+#messages .my-message {
+    background-color: #ffffff;
+    text-align: right;
+}
+
+#messages .other-message {
+    background-color: #e0f7fa;
+    text-align: left;
+}
+
+#form {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 90%;
+    max-width: 600px;
+    margin-top: 1rem;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 5px;
+    box-shadow: 0 2px 4px rgba(180, 173, 173, 0.1);
+}
+
+#input {
+    flex-grow: 1;
+    border: none;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    outline: none;
+}
+
+#input:focus {
+    border: 1px solid #aaa;
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 5px;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+#leaveButton {
+    margin-top: 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #ff6347;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#leaveButton:hover {
+    background-color: #e5533d;
+}
