@@ -37,10 +37,12 @@ class App {
         this.io.on('connection', (socket: CustomSocket) => {
             console.log('User connected =>', socket.id);
 
+            // Envia a lista de salas para o cliente
             socket.on('getRooms', () => {
                 socket.emit('roomsList', this.rooms);
             });
 
+            // Criação de nova sala
             socket.on('createRoom', ({ name, isPrivate, password }) => {
                 const roomExists = this.rooms.find((room) => room.name === name);
                 if (roomExists) {
@@ -54,6 +56,7 @@ class App {
                 socket.emit('roomCreated', newRoom);
             });
 
+            // Entrar em uma sala pública
             socket.on('joinRoom', ({ username, room }) => {
                 const roomObj = this.rooms.find(r => r.name === room);
                 if (!roomObj) {
@@ -67,6 +70,7 @@ class App {
                 socket.emit('joinedRoom', roomObj);
             });
 
+            // Entrar em uma sala privada
             socket.on('joinPrivateRoom', ({ room, password }) => {
                 const roomObj = this.rooms.find(r => r.name === room);
                 if (roomObj && roomObj.isPrivate) {
@@ -83,6 +87,7 @@ class App {
                 }
             });
 
+            // Enviar mensagem
             socket.on('message', (data) => {
                 this.io.to(data.room).emit('message', {
                     username: data.username,
@@ -91,6 +96,12 @@ class App {
                 });
             });
 
+            // Notificação de "digitando..."
+            socket.on('typing', (room) => {
+                socket.to(room).emit('typing', socket.username);
+            });
+
+            // Desconectar o usuário
             socket.on('disconnect', () => {
                 console.log(`${socket.username || socket.id} disconnected`);
             });
