@@ -1,8 +1,10 @@
+/* Estilo geral */
 body {
     margin: 0;
     padding-bottom: 3rem;
     font-family: Arial, sans-serif;
-    background-color: #f9f9f9;
+    background-color: #121212; /* Fundo mais escuro */
+    color: #ffffff;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -10,83 +12,332 @@ body {
     height: 100vh;
 }
 
+/* Tela de Login */
+#login {
+    text-align: center;
+}
+
+#login h2 {
+    font-size: 24px;
+}
+
+#loginForm {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    animation: fadeIn 1s ease-in-out;
+}
+
+#loginForm input {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #555;
+    border-radius: 5px;
+    margin: 10px 0;
+    width: 250px;
+    outline: none;
+    background-color: #333;
+    color: #fff;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+#loginForm input:focus {
+    background-color: #444;
+    transform: scale(1.05);
+}
+
+#loginForm button {
+    border-color: #007bff;
+    padding: 15px;
+    color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 0 40px 40px #007bff inset, 0 0 0 0 #007bff;
+    transition: all 150ms ease-in-out;
+}
+
+#loginForm button:hover {
+    box-shadow: 0 0 10px 0 #007bff inset, 0 0 10px 4px #007bff;
+}
+
+/* Tela de seleção de salas */
+#roomsScreen {
+    text-align: center;
+    background-color: #121212;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Título */
+#roomsScreen h3 {
+    font-size: 22px;
+    margin-bottom: 20px;
+    color: #fff;
+}
+
+/* Lista de Salas */
+#roomList {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* Item da lista de salas */
+#roomList li {
+    padding: 15px 20px;
+    background-color: #007bff;
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+    width: 100%;
+    max-width: 300px;
+    text-align: center;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+#roomList li:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+}
+
+/* Barra de senha */
+#privateRoomPasswordSection {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#privateRoomPassword {
+    padding: 10px;
+    font-size: 16px;
+    width: 250px;
+    background-color: #333;
+    border: 1px solid #555;
+    border-radius: 20px;
+    color: white;
+    margin-bottom: 10px;
+    outline: none;
+    transition: background-color 0.3s;
+}
+
+#privateRoomPassword:focus {
+    background-color: #444;
+}
+
+/* Botão de "Join Room" */
+#joinPrivateRoom {
+    padding: 10px 10px;
+    background-color: #090694;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    width: 100%;
+    max-width: 150px;
+    transition: background-color 0.3s, transform 0.2s;
+    font-size: 16px;
+    margin-top: 10px;
+    margin-left: 10px;
+    display: inline-block;
+    text-align: center;
+}
+
+#joinPrivateRoom:hover {
+    background-color: #090694;
+    transform: scale(1.05);
+}
+
+/* Botão de Criar Sala */
+#createRoomButton {
+    padding: 10px 20px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    width: 100%;
+    max-width: 300px;
+    margin-top: 20px;
+    transition: background-color 0.3s, transform 0.2s;
+    font-size: 16px;
+}
+
+#createRoomButton:hover {
+    background-color: #218838;
+    transform: scale(1.05);
+}
+
+/* Botão de Voltar */
+#backButton {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 30px;
+    cursor: pointer;
+    color: #fff;
+    background-color: transparent;
+    border: none;
+    transition: transform 0.2s;
+}
+
+#backButton:hover {
+    transform: scale(1.2);
+    color: #007bff;
+}
+
+/* Tela de Chat */
+#chatScreen {
+    background-color: #121212;
+    width: 100%;
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    height: 80vh; /* Altura limitada para o chat */
+    overflow: hidden; /* Evitar que o conteúdo ultrapasse a tela */
+    position: relative; /* Para poder posicionar o formulário de forma fixa */
+}
+
+/* Mensagens */
 #messages {
     list-style-type: none;
     padding: 0;
     margin: 0;
-    max-height: 400px;
-    overflow-y: scroll;
+    max-height: 70%; /* Define a altura máxima para a área de mensagens */
+    overflow-y: auto;
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Distância entre as mensagens */
+    margin-bottom: 20px; /* Espaçamento entre as mensagens e a barra de entrada */
 }
 
+/* Mensagens individuais */
 #messages li {
-    padding: 5px;
-    margin: 2px 0;
-    border-bottom: 1px solid #ffffff;
+    padding: 10px;
+    border-radius: 15px;
+    background-color: #333;
+    color: white;
+    animation: fadeInMessage 0.5s ease-in-out;
+    word-wrap: break-word;
+    display: inline-block;
+    max-width: 80%; /* Ajusta a largura máxima para 80% da área de mensagens */
+    box-sizing: border-box;
+    white-space: pre-wrap;
 }
 
+/* Mensagens do usuário */
 #messages .my-message {
-    background-color: #ffffff;
-    text-align: right;
-}
-
-#messages .other-message {
-    background-color: #e0f7fa;
+    background-color: #007bff;
     text-align: left;
+    margin-left: auto; /* Alinha à direita */
 }
 
+/* Mensagens dos outros */
+#messages .other-message {
+    background-color: #505050;
+    text-align: left;
+    margin-right: auto; /* Alinha à esquerda */
+}
+
+/* Bolinha ao lado do nome */
+#messages .message-content .user-name::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    background-color: #007bff; /* Cor da bolinha */
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 5px;
+}
+
+/* Mensagens do usuário */
+#messages .my-message {
+    background-color: #007bff;
+    text-align: left;
+    margin-left: auto; /* Alinha à direita */
+}
+
+/* Mensagens dos outros */
+#messages .other-message {
+    background-color: #505050;
+    text-align: left;
+    margin-right: auto; /* Alinha à esquerda */
+}
+
+/* Imagem de avatar */
+#messages li img {
+    width: 30px; /* Tamanho ajustado da imagem */
+    height: 30px; /* Tamanho ajustado da imagem */
+    border-radius: 50%; /* Tornar a imagem redonda */
+    margin-right: 10px; /* Espaço entre a imagem e o texto */
+}
+
+/* Barra de entrada de mensagens */
 #form {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    width: 90%;
-    max-width: 600px;
-    margin-top: 1rem;
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    padding: 5px;
-    box-shadow: 0 2px 4px rgba(180, 173, 173, 0.1);
+    width: 100%;
+    position: absolute; /* Fixa o formulário na parte inferior */
+    bottom: 10px; /* Distância da parte inferior da tela */
+    left: 0.5px;
+    right: 10px;
+    box-sizing: border-box; /* Inclui a margem e o padding no cálculo da largura */
 }
 
-#input {
-    flex-grow: 1;
-    border: none;
+#form input {
+    width: 85%; /* O campo de entrada ocupa a maior parte da tela */
     padding: 10px;
-    font-size: 16px;
-    border-radius: 5px;
+    background-color: #333;
+    border: 1px solid #555;
+    border-radius: 20px;
+    color: white;
+    margin-right: 10px;
     outline: none;
+    box-sizing: border-box; /* Para garantir que o campo de texto não ultrapasse os limites */
 }
 
-#input:focus {
-    border: 1px solid #aaa;
+#form input:focus {
+    background-color: #444;
 }
 
-button {
+#form button {
     padding: 10px 20px;
-    font-size: 16px;
     background-color: #007bff;
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 20px;
     cursor: pointer;
-    margin-left: 5px;
+    transition: background-color 0.3s, transform 0.2s;
+    margin-left: 0; /* Remover margem negativa */
+    width: 15%; /* O botão ocupa uma parte menor da tela */
+    box-sizing: border-box; /* Garantir que o botão se ajuste corretamente */
 }
 
-button:hover {
+#form button:hover {
     background-color: #0056b3;
 }
 
-#leaveButton {
-    margin-top: 10px;
-    padding: 10px 20px;
-    font-size: 16px;
-    background-color: #ff6347;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+/* Animações */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
-#leaveButton:hover {
-    background-color: #e5533d;
+@keyframes fadeInMessage {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
