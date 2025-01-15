@@ -83,13 +83,21 @@ Isso irá iniciar o servidor no ambiente de desenvolvimento.
 
 ### Códigos Resumidos:
 npm init -y
+
 npm install -g yarn
+
 npm install --global yarn
+
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+
 yarn --version
+
 yarn add typescript -D
+
 yarn add express socket.io
+
 yarn add @types/express -D
+
 yarn add tsx -D
 yarn dev
 npm run dev
