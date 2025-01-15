@@ -91,6 +91,14 @@ class App {
                 });
             });
 
+            socket.on('image', (data) => {
+                this.io.to(data.room).emit('image', {
+                    username: data.username,
+                    image: data.image,
+                    room: data.room
+                });
+            });
+
             socket.on('disconnect', () => {
                 console.log(`${socket.username || socket.id} disconnected`);
             });

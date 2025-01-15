@@ -253,37 +253,14 @@ body {
     margin-right: auto; /* Alinha à esquerda */
 }
 
-/* Bolinha ao lado do nome */
-#messages .message-content .user-name::before {
-    content: '';
-    width: 8px;
-    height: 8px;
-    background-color: #007bff; /* Cor da bolinha */
-    border-radius: 50%;
-    display: inline-block;
-    margin-right: 5px;
-}
-
-/* Mensagens do usuário */
-#messages .my-message {
-    background-color: #007bff;
-    text-align: left;
-    margin-left: auto; /* Alinha à direita */
-}
-
-/* Mensagens dos outros */
-#messages .other-message {
-    background-color: #505050;
-    text-align: left;
-    margin-right: auto; /* Alinha à esquerda */
-}
-
-/* Imagem de avatar */
-#messages li img {
-    width: 30px; /* Tamanho ajustado da imagem */
-    height: 30px; /* Tamanho ajustado da imagem */
-    border-radius: 50%; /* Tornar a imagem redonda */
-    margin-right: 10px; /* Espaço entre a imagem e o texto */
+/* Estilo para a imagem */
+#messages .my-message img, #messages .other-message img {
+    max-width: 100%; /* A imagem não ultrapassa a largura do container */
+    height: auto; /* Mantém a proporção da imagem */
+    border-radius: 8px;
+    margin-top: 5px; /* Adiciona um pequeno espaço entre a imagem e o texto */
+    display: block; /* Garante que a imagem ocupe sua própria linha */
+    margin-left: 0;
 }
 
 /* Barra de entrada de mensagens */
@@ -316,13 +293,13 @@ body {
 
 :root {
     --color: #0cf;
-  }
-  
-  #form button {
+}
+
+#form button {
     display: flex;  /* Usando flexbox para alinhar o texto corretamente */
     justify-content: center;  /* Centralizando o conteúdo horizontalmente */
     align-items: center;  /* Centralizando o conteúdo verticalmente */
-    padding: 0.75rem 1.25rem;
+    padding: 0.65rem 0,60rem;
     border-radius: 10rem;
     color: #fff;
     text-transform: uppercase;
@@ -337,9 +314,9 @@ body {
     cursor: pointer;
     width: 15%;
     box-sizing: border-box;
-  }
-  
-  #form button::after {
+}
+
+#form button::after {
     content: '';
     position: absolute;
     bottom: 0;
@@ -349,9 +326,9 @@ body {
     background-color: var(--color);
     border-radius: 10rem;
     z-index: -2;
-  }
-  
-  #form button::before {
+}
+
+#form button::before {
     content: '';
     position: absolute;
     bottom: 0;
@@ -362,25 +339,90 @@ body {
     transition: all 0.3s;
     border-radius: 10rem;
     z-index: -1;
-  }
-  
-  #form button:hover {
+}
+
+#form button:hover {
     color: #fff;
-  }
-  
-  #form button:hover::before {
+}
+
+#form button:hover::before {
     width: 100%;
-  }
-  
-  /* Reset opcional para a apresentação */
-  * {
+}
+
+/* Reset opcional para a apresentação */
+* {
     font-family: Arial, sans-serif;
     text-decoration: none;
     font-size: 20px;
-  }
-  
-  
-  
+}
+
+/* Estilizando o botão de envio de imagem */
+#sendImageButton {
+    background-color: #28a745;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#sendImageButton i {
+    font-size: 1.2rem;
+}
+
+#sendImageButton:hover {
+    background-color: #218838;
+}
+
+/* Modal */
+.modal {
+    display: none; /* Escondido por padrão */
+    position: fixed;
+    z-index: 1;
+    padding-top: 100px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.7); /* Fundo semitransparente */
+    text-align: center;
+}
+
+.modal-content {
+    margin: auto;
+    display: block;
+    width: 80%;
+    max-width: 700px;
+}
+
+#caption {
+    margin: 10px;
+    color: #fff;
+    text-align: center;
+    font-size: 18px;
+}
+
+/* Fechar botão */
+.close {
+    position: absolute;
+    top: 15px;
+    right: 35px;
+    color: #f1f1f1;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: #bbb;
+    text-decoration: none;
+    cursor: pointer;
+}
 
 /* Animações */
 @keyframes fadeIn {
