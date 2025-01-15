@@ -314,22 +314,73 @@ body {
     background-color: #444;
 }
 
-#form button {
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
+:root {
+    --color: #0cf;
+  }
+  
+  #form button {
+    display: flex;  /* Usando flexbox para alinhar o texto corretamente */
+    justify-content: center;  /* Centralizando o conteúdo horizontalmente */
+    align-items: center;  /* Centralizando o conteúdo verticalmente */
+    padding: 0.75rem 1.25rem;
+    border-radius: 10rem;
+    color: #fff;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 0.05rem;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    background-color: var(--color);
     border: none;
-    border-radius: 20px;
     cursor: pointer;
-    transition: background-color 0.3s, transform 0.2s;
-    margin-left: 0; /* Remover margem negativa */
-    width: 15%; /* O botão ocupa uma parte menor da tela */
-    box-sizing: border-box; /* Garantir que o botão se ajuste corretamente */
-}
-
-#form button:hover {
-    background-color: #0056b3;
-}
+    width: 15%;
+    box-sizing: border-box;
+  }
+  
+  #form button::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--color);
+    border-radius: 10rem;
+    z-index: -2;
+  }
+  
+  #form button::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0%;
+    height: 100%;
+    background-color: #009b99;
+    transition: all 0.3s;
+    border-radius: 10rem;
+    z-index: -1;
+  }
+  
+  #form button:hover {
+    color: #fff;
+  }
+  
+  #form button:hover::before {
+    width: 100%;
+  }
+  
+  /* Reset opcional para a apresentação */
+  * {
+    font-family: Arial, sans-serif;
+    text-decoration: none;
+    font-size: 20px;
+  }
+  
+  
+  
 
 /* Animações */
 @keyframes fadeIn {
