@@ -41,6 +41,8 @@ body {
     transition: background-color 0.3s, transform 0.2s;
 }
 
+
+
 #loginForm input:focus {
     background-color: #444;
     transform: scale(1.05);
@@ -361,12 +363,12 @@ body {
     background-color: #28a745;
     border: none;
     color: white;
-    padding: 10px 20px;
+    padding: 5px 0.1px;
     border-radius: 20px;
     cursor: pointer;
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 5px;
 }
 
 #sendImageButton i {
@@ -424,6 +426,66 @@ body {
     cursor: pointer;
 }
 
+/* Botão para listar salas */
+#getRoomsButton {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    width: 100%;
+    max-width: 300px;
+    margin-top: 20px;
+    transition: background-color 0.3s, transform 0.2s;
+    font-size: 16px;
+}
+
+#getRoomsButton:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+}
+
+/* Botão para criar sala */
+#createRoomButton {
+    padding: 10px 20px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    width: 100%;
+    max-width: 300px;
+    margin-top: 20px;
+    transition: background-color 0.3s, transform 0.2s;
+    font-size: 16px;
+}
+
+#createRoomButton:hover {
+    background-color: #218838;
+    transform: scale(1.05);
+}
+
+/* Botão para entrar em sala privada */
+#joinPrivateRoomButton {
+    padding: 10px 20px;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    width: 100%;
+    max-width: 300px;
+    margin-top: 20px;
+    transition: background-color 0.3s, transform 0.2s;
+    font-size: 16px;
+}
+
+#joinPrivateRoomButton:hover {
+    background-color: #c82333;
+    transform: scale(1.05);
+}
+
 /* Animações */
 @keyframes fadeIn {
     from { opacity: 0; }
@@ -434,3 +496,4 @@ body {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
 }
+

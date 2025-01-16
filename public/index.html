@@ -7,8 +7,27 @@
     <link rel="stylesheet" href="/styles.css">
     <!-- Font Awesome para ícones -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <!-- Estilos adicionais para a navbar -->
+    <link rel="stylesheet" href="/style-navbar.css">
 </head>
 <body>
+    <!-- Navbar -->
+    <header>
+        <nav class="navbar">
+            <a class="logo" href="/">BlueTalk</a>
+            <div class="mobile-menu">
+                <div class="line1"></div>
+                <div class="line2"></div>
+                <div class="line3"></div>
+            </div>
+            <ul class="nav-list">
+                <li><a href="#login">Login</a></li>
+                <li><a href="#roomsScreen">Salas</a></li>
+                <li><a href="#chatScreen">Chat</a></li>
+            </ul>
+        </nav>
+    </header>
+
     <!-- Tela de Login -->
     <div id="login">
         <h2>Informe seu nome para entrar</h2>
@@ -40,20 +59,53 @@
             <button type="submit" id="sendButton">Enviar</button>
             <!-- Botão para enviar imagem -->
             <button type="button" id="sendImageButton">
-                <i class="fa fa-image"></i> Img
+                <i class="fa fa-image"></i> 
             </button>
             <input type="file" id="imageInput" style="display: none;" accept="image/*" />
         </form>
     </div>
 
     <!-- Modal para exibição de imagem -->
-<div id="imageModal" class="modal" style="display:none;">
-    <span class="close">&times;</span>
-    <img class="modal-content" id="modalImage">
-    <div id="caption"></div>
-</div>
+    <div id="imageModal" class="modal" style="display:none;">
+        <span class="close">&times;</span>
+        <img class="modal-content" id="modalImage">
+        <div id="caption"></div>
+    </div>
 
+    <script src="/public/mobile-navbar.js"></script>
     <script src="/socket.io/socket.io.js"></script>
+    <script>
+        // Função para manipular o menu sanduíche
+        class MobileNavbar {
+            constructor(mobileMenu, navList) {
+                this.mobileMenu = document.querySelector(mobileMenu);
+                this.navList = document.querySelector(navList);
+                this.activeClass = "active";
+
+                this.handleClick = this.handleClick.bind(this);
+            }
+
+            handleClick() {
+                this.navList.classList.toggle(this.activeClass);
+                this.mobileMenu.classList.toggle(this.activeClass);
+            }
+
+            addClickEvent() {
+                this.mobileMenu.addEventListener("click", this.handleClick);
+            }
+
+            init() {
+                if (this.mobileMenu) {
+                    this.addClickEvent();
+                }
+                return this;
+            }
+        }
+
+        const mobileNavbar = new MobileNavbar(".mobile-menu", ".nav-list");
+        mobileNavbar.init();
+    </script>
+
     <script>
         var socket = io();
         const loginScreen = document.getElementById('login');
@@ -73,9 +125,25 @@
         const sendImageButton = document.getElementById('sendImageButton');
         const imageInput = document.getElementById('imageInput');
         const backButton = document.getElementById('backButton');
+        const modal = document.getElementById("imageModal");
+        const modalImg = document.getElementById("modalImage");
+        const captionText = document.getElementById("caption");
         let username;
         let currentRoom = null;
         let isPrivateRoom = false;
+
+        // Funções para editar mensagem, excluir mensagem e excluir sala
+        function editMessage(messageId, newMessage) {
+            socket.emit('editMessage', { messageId, newMessage });
+        }
+
+        function deleteMessage(messageId) {
+            socket.emit('deleteMessage', { messageId });
+        }
+
+        function deleteRoom(roomName) {
+            socket.emit('deleteRoom', { roomName });
+        }
 
         // Tela de Login
         loginForm.addEventListener('submit', (e) => {
@@ -190,40 +258,40 @@
         });
 
         // Receber imagem
-socket.on('image', (data) => {
-    if (data.room === currentRoom) {
-        const li = document.createElement('li');
-        const userSpan = document.createElement('span');
-        const image = document.createElement('img');
-        const strongTag = document.createElement('strong');
+        socket.on('image', (data) => {
+            if (data.room === currentRoom) {
+                const li = document.createElement('li');
+                const userSpan = document.createElement('span');
+                const image = document.createElement('img');
+                const strongTag = document.createElement('strong');
 
-        strongTag.textContent = data.username;
-        userSpan.appendChild(strongTag);
-        userSpan.style.marginRight = '10px';
+                strongTag.textContent = data.username;
+                userSpan.appendChild(strongTag);
+                userSpan.style.marginRight = '10px';
 
-        image.src = data.image;
-        image.style.maxWidth = '100%'; // Ajusta a imagem para não ultrapassar a largura
+                image.src = data.image;
+                image.style.maxWidth = '100%'; // Ajusta a imagem para não ultrapassar a largura
 
-        // Adiciona a imagem à lista de mensagens
-        li.appendChild(userSpan);
-        li.appendChild(image);
-        li.classList.add(data.username === username ? 'my-message' : 'other-message');
-        messagesList.appendChild(li);
+                // Adiciona a imagem à lista de mensagens
+                li.appendChild(userSpan);
+                li.appendChild(image);
+                li.classList.add(data.username === username ? 'my-message' : 'other-message');
+                messagesList.appendChild(li);
 
-        // Adiciona o evento de clique para abrir a imagem no modal
-        image.addEventListener("click", function() {
-            modal.style.display = "block";
-            modalImg.src = this.src;
-            captionText.innerHTML = this.alt || "Imagem";
+                // Adiciona o evento de clique para abrir a imagem no modal
+                image.addEventListener("click", function() {
+                    modal.style.display = "block";
+                    modalImg.src = this.src;
+                    captionText.innerHTML = this.alt || "Imagem";
+                });
+            }
         });
-    }
-});
 
-// Quando o usuário clicar no botão de fechar, fechar o modal
-var span = document.getElementsByClassName("close")[0];
-span.onclick = function() {
-    modal.style.display = 'none';
-};
+        // Quando o usuário clicar no botão de fechar, fechar o modal
+        var span = document.getElementsByClassName("close")[0];
+        span.onclick = function() {
+            modal.style.display = 'none';
+        };
 
         function getUserColor(username) {
             let hash = 0;

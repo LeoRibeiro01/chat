@@ -1,0 +1,152 @@
+/* Reseta margem e padding no body e html */
+body, html {
+    margin: 0;
+    padding: 0;
+}
+
+/* Navbar fixa no topo da página */
+.navbar {
+    position: fixed;  /* Fixa a navbar no topo */
+    top: 0;
+    left: 0;
+    width: 100%;      /* Garante que ocupe toda a largura */
+    background-color: #000049;  /* Cor de fundo da navbar */
+    color: white;
+    z-index: 1000;    /* Garante que a navbar fique acima de outros elementos */
+    padding: 10px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+/* Ajuste do conteúdo abaixo da navbar */
+body {
+    padding-top: 60px;  /* Ajuste para o tamanho da navbar */
+}
+
+/* Links e logo */
+a {
+    color: #fff;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+a:hover {
+    opacity: 0.7;
+}
+
+.logo {
+    font-size: 24px;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+}
+
+/* Menu de navegação */
+nav {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    font-family: system-ui, -apple-system, Helvetica, Arial, sans-serif;
+    background: #000049;
+    height: 8vh; /* Altura da navbar */
+}
+
+/* Lista de navegação */
+.nav-list {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+}
+
+/* Items da nav */
+.nav-list li {
+    letter-spacing: 3px;
+    margin-left: 35px;
+    margin-right: 35px;
+}
+
+/* Menu mobile */
+.mobile-menu {
+    display: none;
+    cursor: pointer;
+}
+
+.mobile-menu div {
+    width: 32px;
+    height: 2px;
+    background: #fff;
+    margin: 8px;
+    transition: 0.3s;
+}
+
+/* Estilo para o menu mobile */
+@media (max-width: 999px) {
+    body {
+        overflow-x: hidden;
+    }
+
+    .nav-list {
+        position: absolute;
+        top: 8vh;  /* Ajuste para o topo da página */
+        right: 0;
+        width: 25vw;  /* Ocupa metade da tela no mobile */
+        height: 92vh;
+        background: #000049;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-around;
+        transform: translateX(100%);
+        transition: transform 0.3s ease-in;
+    }
+
+    .nav-list li {
+        margin-left: 0;
+        opacity: 1;
+    }
+
+    .mobile-menu {
+        display: block;
+    }
+}
+
+/* Menu mobile ativo */
+.nav-list.active {
+    transform: translateX(0);
+}
+
+/* Animação de fade para os links */
+.nav-list li {
+    list-style: none;
+    opacity: 1;
+}
+
+.nav-list li.active {
+    opacity: 1;
+    animation: navLinkFade 0.5s ease forwards;
+}
+
+@keyframes navLinkFade {
+    from {
+        opacity: 1;
+        transform: translateX(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Animação do ícone do menu no mobile */
+.mobile-menu.active .line1 {
+    transform: rotate(-45deg) translate(-8px, 8px);
+}
+
+.mobile-menu.active .line2 {
+    opacity: 1;
+}
+
+.mobile-menu.active .line3 {
+    transform: rotate(45deg) translate(-5px, -7px);
+}

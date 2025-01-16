@@ -12,6 +12,8 @@ interface Room {
     name: string;
     isPrivate: boolean;
     password?: string;
+    messages: { id: string; username: string; message: string }[];
+    images: { id: string; username: string; image: string }[];  // Adicionando imagens à sala
 }
 
 class App {
@@ -24,7 +26,7 @@ class App {
         this.app = express();
         this.http = http.createServer(this.app);
         this.io = new Server(this.http);
-        this.rooms = []; // Inicializar a lista de salas
+        this.rooms = [];
         this.listenSocket();
         this.setupRoutes();
     }
@@ -48,7 +50,7 @@ class App {
                     return;
                 }
 
-                const newRoom: Room = { name, isPrivate, password: isPrivate ? password : undefined };
+                const newRoom: Room = { name, isPrivate, password: isPrivate ? password : undefined, messages: [], images: [] };  // Adicionando imagens à sala
                 this.rooms.push(newRoom);
                 this.io.emit('roomsList', this.rooms);
                 socket.emit('roomCreated', newRoom);
@@ -63,7 +65,7 @@ class App {
 
                 socket.username = username;
                 socket.join(room);
-                this.io.to(room).emit('message', { username: 'System', message: `${username} has joined the room!` });
+                this.io.to(room).emit('message', { id: this.generateMessageId(), username: 'System', message: `${username} has joined the room!` });
                 socket.emit('joinedRoom', roomObj);
             });
 
@@ -73,7 +75,7 @@ class App {
                     if (roomObj.password === password) {
                         socket.username = socket.username || 'Unknown User';
                         socket.join(room);
-                        this.io.to(room).emit('message', { username: 'System', message: `${socket.username} has joined the private room!` });
+                        this.io.to(room).emit('message', { id: this.generateMessageId(), username: 'System', message: `${socket.username} has joined the private room!` });
                         socket.emit('joinedRoom', roomObj);
                     } else {
                         socket.emit('error', 'Incorrect password');
@@ -84,19 +86,46 @@ class App {
             });
 
             socket.on('message', (data) => {
-                this.io.to(data.room).emit('message', {
-                    username: data.username,
-                    message: data.message,
-                    room: data.room
-                });
+                const roomObj = this.rooms.find(r => r.name === data.room);
+                if (roomObj) {
+                    const message = { id: this.generateMessageId(), username: data.username, message: data.message };
+                    roomObj.messages.push(message);
+                    this.io.to(data.room).emit('message', { ...message, room: data.room });
+                }
             });
 
             socket.on('image', (data) => {
-                this.io.to(data.room).emit('image', {
-                    username: data.username,
-                    image: data.image,
-                    room: data.room
-                });
+                const roomObj = this.rooms.find(r => r.name === data.room);
+                if (roomObj) {
+                    const image = { id: this.generateMessageId(), username: data.username, image: data.image };
+                    roomObj.images.push(image);  // Armazenando a imagem na sala
+                    this.io.to(data.room).emit('image', { ...image, room: data.room });
+                }
+            });
+
+            socket.on('editMessage', ({ roomId, messageId, newMessage }) => {
+                const roomObj = this.rooms.find(r => r.name === roomId);
+                if (roomObj) {
+                    const messageObj = roomObj.messages.find(m => m.id === messageId);
+                    if (messageObj && messageObj.username === socket.username) {
+                        messageObj.message = newMessage;
+                        this.io.to(roomId).emit('messageEdited', { messageId, newMessage });
+                    }
+                }
+            });
+
+            socket.on('deleteMessage', ({ roomId, messageId }) => {
+                const roomObj = this.rooms.find(r => r.name === roomId);
+                if (roomObj) {
+                    roomObj.messages = roomObj.messages.filter(m => m.id !== messageId);
+                    this.io.to(roomId).emit('messageDeleted', { messageId });
+                }
+            });
+
+            socket.on('deleteRoom', (roomId) => {
+                this.rooms = this.rooms.filter(r => r.name !== roomId);
+                this.io.emit('roomsList', this.rooms);
+                this.io.to(roomId).emit('roomDeleted');
             });
 
             socket.on('disconnect', () => {
@@ -106,13 +135,14 @@ class App {
     }
 
     setupRoutes() {
-        // Servindo arquivos estáticos (CSS, JS) da pasta 'public' que está na raiz do projeto
-        this.app.use(express.static(path.join(__dirname, '..', 'public')));  // Aqui apontamos para a pasta 'public' na raiz
-    
-        // Rota para servir o index.html
+        this.app.use(express.static(path.join(__dirname, '..', 'public')));
         this.app.get('/', (req, res) => {
-            res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));  // Aqui também usamos o caminho correto para 'public'
+            res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
         });
+    }
+
+    private generateMessageId(): string {
+        return Math.random().toString(36).substr(2, 9);
     }
 }
 
