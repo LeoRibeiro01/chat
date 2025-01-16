@@ -11,7 +11,7 @@ body, html {
     left: 0;
     width: 100%;      /* Garante que ocupe toda a largura */
     background-color: #000049;  /* Cor de fundo da navbar */
-    color: white;
+    color: rgb(255, 255, 255);
     z-index: 1000;    /* Garante que a navbar fique acima de outros elementos */
     padding: 10px 0;
     display: flex;
@@ -19,6 +19,21 @@ body, html {
     align-items: center;
     padding-left: 20px;
     padding-right: 20px;
+}
+
+.navbar .logo {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #fff;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+}
+
+.navbar .logo-img {
+    width: 65px; /* Ajuste o tamanho da logo conforme necessário */
+    height: auto;
+    margin-right: 10px; /* Espaço entre a logo e o texto */
 }
 
 /* Ajuste do conteúdo abaixo da navbar */
@@ -57,14 +72,14 @@ nav {
 .nav-list {
     list-style: none;
     display: flex;
-    gap: 20px;
+    gap: 5px;
 }
 
 /* Items da nav */
 .nav-list li {
     letter-spacing: 3px;
     margin-left: 35px;
-    margin-right: 35px;
+    margin-right: 70px;
 }
 
 /* Menu mobile */

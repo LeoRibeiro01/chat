@@ -12,9 +12,19 @@ body {
     height: 100vh;
 }
 
+/* Navbar */
+
+
 /* Tela de Login */
 #login {
     text-align: center;
+}
+
+/* Logo na tela de login */
+.login-logo {
+    width: 250px;
+    height: auto;
+    margin-bottom: 5px;
 }
 
 #login h2 {
@@ -40,8 +50,6 @@ body {
     color: #fff;
     transition: background-color 0.3s, transform 0.2s;
 }
-
-
 
 #loginForm input:focus {
     background-color: #444;
@@ -496,4 +504,3 @@ body {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
 }
-
