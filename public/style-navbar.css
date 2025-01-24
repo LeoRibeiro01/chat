@@ -123,6 +123,7 @@ nav {
 
     .mobile-menu {
         display: block;
+        margin-right: 25px;
     }
 }
 

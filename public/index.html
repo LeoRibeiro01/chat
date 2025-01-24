@@ -80,26 +80,29 @@
     <script src="/public/mobile-navbar.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script>
-        // Função para manipular o menu sanduíche
+        // Função para manipular o menu sanduíche (navbar responsiva)
         class MobileNavbar {
             constructor(mobileMenu, navList) {
-                this.mobileMenu = document.querySelector(mobileMenu);
-                this.navList = document.querySelector(navList);
-                this.activeClass = "active";
+                this.mobileMenu = document.querySelector(mobileMenu); // Seleciona o menu móvel
+                this.navList = document.querySelector(navList); // Seleciona a lista de navegação
+                this.activeClass = "active"; // Classe que será adicionada quando o menu estiver ativo
 
-                this.handleClick = this.handleClick.bind(this);
+                this.handleClick = this.handleClick.bind(this); // Garante o contexto da função
             }
 
             handleClick() {
+                // Alterna a classe active para mostrar/ocultar o menu
                 this.navList.classList.toggle(this.activeClass);
                 this.mobileMenu.classList.toggle(this.activeClass);
             }
 
             addClickEvent() {
+                // Adiciona um ouvinte de evento para o clique
                 this.mobileMenu.addEventListener("click", this.handleClick);
             }
 
             init() {
+                // Inicializa o evento de clique se o menu móvel existir
                 if (this.mobileMenu) {
                     this.addClickEvent();
                 }
@@ -107,11 +110,11 @@
             }
         }
 
+        // Cria uma instância da MobileNavbar e inicializa
         const mobileNavbar = new MobileNavbar(".mobile-menu", ".nav-list");
         mobileNavbar.init();
-    </script>
 
-    <script>
+        // Inicia a conexão com o servidor Socket.IO
         var socket = io();
         const loginScreen = document.getElementById('login');
         const roomsScreen = document.getElementById('roomsScreen');
@@ -139,35 +142,35 @@
 
         // Funções para editar mensagem, excluir mensagem e excluir sala
         function editMessage(messageId, newMessage) {
-            socket.emit('editMessage', { messageId, newMessage });
+            socket.emit('editMessage', { messageId, newMessage }); // Envia a edição ao servidor
         }
 
         function deleteMessage(messageId) {
-            socket.emit('deleteMessage', { messageId });
+            socket.emit('deleteMessage', { messageId }); // Envia a solicitação de exclusão ao servidor
         }
 
         function deleteRoom(roomName) {
-            socket.emit('deleteRoom', { roomName });
+            socket.emit('deleteRoom', { roomName }); // Envia a solicitação de exclusão da sala ao servidor
         }
 
         // Tela de Login
         loginForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            username = nameInput.value.trim();
+            e.preventDefault(); // Previne o comportamento padrão do formulário
+            username = nameInput.value.trim(); // Obtém o nome do usuário
             if (username) {
-                loginScreen.style.display = 'none';
-                roomsScreen.style.display = 'block';
-                socket.emit('getRooms');
+                loginScreen.style.display = 'none'; // Oculta a tela de login
+                roomsScreen.style.display = 'block'; // Mostra a tela de salas
+                socket.emit('getRooms'); // Solicita as salas do servidor
             }
         });
 
         // Mostrar as salas disponíveis
         socket.on('roomsList', (rooms) => {
-            roomList.innerHTML = '';
+            roomList.innerHTML = ''; // Limpa a lista de salas
             rooms.forEach(room => {
                 const li = document.createElement('li');
                 li.textContent = room.name;
-                li.onclick = () => joinRoom(room);
+                li.onclick = () => joinRoom(room); // Quando clicar na sala, entra nela
                 roomList.appendChild(li);
             });
         });
@@ -176,13 +179,15 @@
         function joinRoom(room) {
             currentRoom = room.name;
             if (room.isPrivate) {
+                // Sala privada
                 isPrivateRoom = true;
-                privateRoomPasswordSection.style.display = 'block';
+                privateRoomPasswordSection.style.display = 'block'; // Mostra a seção para inserir a senha
                 joinPrivateRoomButton.onclick = () => {
                     const password = privateRoomPasswordInput.value.trim();
                     socket.emit('joinPrivateRoom', { room: room.name, password });
                 };
             } else {
+                // Sala pública
                 socket.emit('joinRoom', { username, room: room.name });
                 roomsScreen.style.display = 'none';
                 chatScreen.style.display = 'block';
@@ -212,10 +217,10 @@
 
         // Enviar mensagem
         document.getElementById('form').addEventListener('submit', (e) => {
-            e.preventDefault();
+            e.preventDefault(); // Previne o envio do formulário
             if (input.value) {
                 socket.emit('message', { username, room: currentRoom, message: input.value });
-                input.value = '';
+                input.value = ''; // Limpa o campo de entrada
             }
         });
 
@@ -228,7 +233,7 @@
                 const strongTag = document.createElement('strong');
 
                 strongTag.textContent = data.username;
-                strongTag.style.color = getUserColor(data.username);
+                strongTag.style.color = getUserColor(data.username); // Define a cor do usuário
                 userSpan.appendChild(strongTag);
                 userSpan.style.marginRight = '10px';
 
@@ -243,7 +248,7 @@
 
         // Enviar imagem
         sendImageButton.addEventListener('click', () => {
-            imageInput.click();
+            imageInput.click(); // Aciona a seleção de arquivo de imagem
         });
 
         imageInput.addEventListener('change', (e) => {
@@ -258,7 +263,7 @@
                         image: imageBase64
                     });
                 };
-                reader.readAsDataURL(file);
+                reader.readAsDataURL(file); // Lê a imagem como base64
             }
         });
 
@@ -292,12 +297,13 @@
             }
         });
 
-        // Quando o usuário clicar no botão de fechar, fechar o modal
+        // Fechar o modal ao clicar no "X"
         var span = document.getElementsByClassName("close")[0];
         span.onclick = function() {
-            modal.style.display = 'none';
+            modal.style.display = 'none'; // Esconde o modal
         };
 
+        // Função para gerar uma cor aleatória para o nome do usuário
         function getUserColor(username) {
             let hash = 0;
             for (let i = 0; i < username.length; i++) {
@@ -316,7 +322,7 @@
             socket.emit('leaveRoom', { username, room: currentRoom });
             chatScreen.style.display = 'none';
             roomsScreen.style.display = 'block';
-            messagesList.innerHTML = '';
+            messagesList.innerHTML = ''; // Limpa a lista de mensagens
         });
 
         // Voltar para a tela de login
