@@ -1,4 +1,4 @@
-# Chat Application
+# BlueTalk
 
 Este é um aplicativo de chat em tempo real utilizando **Express** e **Socket.io**. Ele foi desenvolvido para ser executado em um ambiente de desenvolvimento local. Abaixo estão as etapas para rodar o código em sua máquina.
 
@@ -99,5 +99,7 @@ yarn add express socket.io
 yarn add @types/express -D
 
 yarn add tsx -D
+
 yarn dev
+
 npm run dev
