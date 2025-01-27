@@ -91,7 +91,7 @@ class App {
                         this.io.to(room).emit('message', { id: this.generateMessageId(), username: 'System', message: `${socket.username} has joined the private room!` });
                         socket.emit('joinedRoom', roomObj);
                     } else {
-                        socket.emit('error', 'Incorrect password');
+                        socket.emit('error', ' Senha Errada!');
                     }
                 } else {
                     socket.emit('error', 'Room does not exist or is not private');

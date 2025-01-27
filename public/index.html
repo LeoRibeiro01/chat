@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="/style-navbar.css">
 </head>
 <body>
+        
     <!-- Navbar -->
     <header>
         <nav class="navbar">
@@ -32,6 +33,7 @@
 
     <!-- Tela de Login -->
     <div id="login">
+
         <div class="logo-container">
             <img src="img/bluetalk.png" alt="BlueTalk Logo" class="login-logo">
         </div>
@@ -41,6 +43,14 @@
             <button type="submit">Entrar</button>
         </form>
     </div>
+
+    <div class="cube"></div>
+        <div class="cube"></div>
+        <div class="cube"></div>
+        <div class="cube"></div>
+        <div class="cube"></div>
+        <div class="cube"></div>
+      </div>
 
     <!-- Tela de Salas -->
     <div id="roomsScreen" style="display: none;">
@@ -80,7 +90,7 @@
     <script src="/public/mobile-navbar.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script>
-        // Função para manipular o menu sanduíche (navbar responsiva)
+        // Função pra manipular a navbar
         class MobileNavbar {
             constructor(mobileMenu, navList) {
                 this.mobileMenu = document.querySelector(mobileMenu); // Seleciona o menu móvel
@@ -91,7 +101,7 @@
             }
 
             handleClick() {
-                // Alterna a classe active para mostrar/ocultar o menu
+                // Alterna a classe active para mostrar ou ocultar o menu
                 this.navList.classList.toggle(this.activeClass);
                 this.mobileMenu.classList.toggle(this.activeClass);
             }
@@ -151,6 +161,12 @@
 
         function deleteRoom(roomName) {
             socket.emit('deleteRoom', { roomName }); // Envia a solicitação de exclusão da sala ao servidor
+        }
+
+        //Função de abrir opções com 2 cliques
+        function showOptions(messageElement) {
+        const options = messageElement.querySelector('.message-options');
+        options.style.display = 'flex'; // Mostra as opções
         }
 
         // Tela de Login
