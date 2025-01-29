@@ -223,14 +223,22 @@
             privateRoomPasswordSection.style.display = 'none';
         });
 
-        // Criar sala
+       // Criar sala
         createRoomButton.addEventListener('click', () => {
             const roomName = prompt("Insira o nome da sala:");
+            
+            if (roomName === null || roomName.trim() === "") {
+                // Se o usuário cancelar ou não inserir nada, não prossegue
+                alert("Criação de sala cancelada.");
+                return;
+            }
+
             const isPrivate = confirm("Essa sala é privada?");
             const password = isPrivate ? prompt("Insira uma senha para a sala:") : null;
+
             socket.emit('createRoom', { name: roomName, isPrivate, password });
         });
-
+        
         // Enviar mensagem
         document.getElementById('form').addEventListener('submit', (e) => {
             e.preventDefault(); // Previne o envio do formulário

@@ -107,13 +107,18 @@ body {
     padding: 15px;
     color: #ffffff;
     border-radius: 10px;
+    background-color: #001aff; /* Cor azul normal */
     box-shadow: 0 0 40px 40px #0104c9 inset, 0 0 0 0 #0104c9;
     transition: all 150ms ease-in-out;
 }
 
 #loginForm button:hover {
-    box-shadow: 0 0 10px 0 #000f96 inset, 0 0 10px 4px #000f96;
+    background-color: transparent;  /* Fica transparente no hover */
+    color: #ffffff;  /* A letra continua branca */
+    border-color: #000f96;  /* Borda brilhando com outro tom de azul */
+    box-shadow: 0 0 10px 0 #000f96 inset, 0 0 10px 4px #000f96; /* Efeito de brilho na borda */
 }
+
 
 
 
@@ -150,20 +155,33 @@ body {
 /* Item da lista de salas */
 #roomList li {
     padding: 15px 20px;
-    background-color: #007bff;
+    background: linear-gradient(135deg, #00a2ff, #0026ff);
     color: white;
-    border-radius: 8px;
+    border-radius: 12px; 
     cursor: pointer;
     width: 100%;
     max-width: 300px;
     text-align: center;
-    transition: background-color 0.3s, transform 0.2s;
+    font-weight: bold;
+    transition: background 0.4s ease, transform 0.3s ease, box-shadow 0.3s ease; 
+    margin-bottom: 10px;  
 }
 
 #roomList li:hover {
-    background-color: #0056b3;
+    background: linear-gradient(135deg, #00bcd4, #0400ff); 
     transform: scale(1.05);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1); 
 }
+
+#roomList li:active {
+    transform: scale(0.98); 
+}
+
+#roomList li:focus {
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.5);
+}
+
 
 /* Barra de senha */
 #privateRoomPasswordSection {
@@ -216,22 +234,33 @@ body {
 /* Botão de Criar Sala */
 #createRoomButton {
     padding: 10px 20px;
-    background-color: #28a745;
+    background: linear-gradient(135deg, #0026ff, #00bcd4);  /* Degradê em tons de roxo e azul */
     color: white;
     border: none;
-    border-radius: 20px;
+    border-radius: 30px;
     cursor: pointer;
     width: 100%;
     max-width: 300px;
     margin-top: 20px;
-    transition: background-color 0.3s, transform 0.2s;
+    transition: background 1s ease, transform 1s, box-shadow 1s ease; 
     font-size: 16px;
+    text-align: center;
+    font-weight: bold;
 }
 
 #createRoomButton:hover {
-    background-color: #218838;
+    background: linear-gradient(135deg, #00e1ff, #0015d4);  /* Inverte o degradê no hover */
     transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
+
+#createRoomButton:focus {
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.5);
+}
+
+
+
 
 /* Botão de Voltar */
 #backButton {

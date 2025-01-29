@@ -51,7 +51,7 @@ class App {
             socket.on('createRoom', ({ name, isPrivate, password }) => {
                 const roomExists = this.rooms.find((room) => room.name === name);
                 if (roomExists) {
-                    socket.emit('error', 'Room already exists');
+                    socket.emit('error', 'A Sala já existe');
                     return;
                 }
 
@@ -101,11 +101,23 @@ class App {
             // Enviar uma mensagem para a sala
             socket.on('message', (data) => {
                 const roomObj = this.rooms.find(r => r.name === data.room);
-                if (roomObj) {
-                    const message = { id: this.generateMessageId(), username: data.username, message: data.message };
-                    roomObj.messages.push(message);  // Adiciona a mensagem à sala
-                    this.io.to(data.room).emit('message', { ...message, room: data.room });  // Envia a mensagem para todos na sala
+                
+                if (!roomObj) return;
+                
+                // Verifica se a mensagem está vazia ou contém apenas espaços
+                if (!data.message || data.message.trim() === '') {
+                    socket.emit('error', 'A mensagem não pode estar vazia.');
+                    return;
                 }
+
+                const message = { 
+                    id: this.generateMessageId(), 
+                    username: data.username, 
+                    message: data.message.trim() // Remove espaços extras
+                };
+
+                roomObj.messages.push(message);  // Adiciona a mensagem à sala
+                this.io.to(data.room).emit('message', { ...message, room: data.room });  // Envia a mensagem para todos na sala
             });
 
             // Enviar uma imagem para a sala
