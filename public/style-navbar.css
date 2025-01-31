@@ -6,19 +6,19 @@ body, html {
 
 /* Navbar fixa no topo da página */
 .navbar {
-    position: fixed;  /* Fixa a navbar no topo */
+    position: fixed;
     top: 0;
     left: 0;
-    width: 100%;      /* Garante que ocupe toda a largura */
-    background-color: #000049;  /* Cor de fundo da navbar */
+    width: 100%;
+    background: rgba(0, 0, 73, 0.85); /* Efeito de transparência */
     color: rgb(255, 255, 255);
-    z-index: 1000;    /* Garante que a navbar fique acima de outros elementos */
-    padding: 10px 0;
+    z-index: 1000;
+    padding: 5px 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-left: 20px;
-    padding-right: 20px;
+    backdrop-filter: blur(8px); /* Efeito de desfoque no fundo */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .navbar .logo {
@@ -28,44 +28,40 @@ body, html {
     text-decoration: none;
     display: flex;
     align-items: center;
+    text-transform: uppercase;
+    letter-spacing: 4px;
 }
 
 .navbar .logo-img {
-    width: 65px; /* Ajuste o tamanho da logo conforme necessário */
+    width: 65px;
     height: auto;
-    margin-right: 10px; /* Espaço entre a logo e o texto */
+    margin-right: 10px;
 }
 
 /* Ajuste do conteúdo abaixo da navbar */
 body {
-    padding-top: 60px;  /* Ajuste para o tamanho da navbar */
+    padding-top: 80px;
 }
 
 /* Links e logo */
 a {
     color: #fff;
     text-decoration: none;
-    transition: 0.3s;
+    transition: 0.3s ease;
 }
 
 a:hover {
     opacity: 0.7;
 }
 
-.logo {
-    font-size: 24px;
-    text-transform: uppercase;
-    letter-spacing: 4px;
-}
-
 /* Menu de navegação */
 nav {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center;
     font-family: system-ui, -apple-system, Helvetica, Arial, sans-serif;
-    background: #000049;
-    height: 8vh; /* Altura da navbar */
+    background: transparent;
+    width: 100%;
 }
 
 /* Lista de navegação */
@@ -73,6 +69,7 @@ nav {
     list-style: none;
     display: flex;
     gap: 5px;
+    margin-left: auto; /* Adiciona espaçamento no lado direito */
 }
 
 /* Items da nav */
@@ -80,12 +77,19 @@ nav {
     letter-spacing: 3px;
     margin-left: 35px;
     margin-right: 70px;
+    position: relative;
+    opacity: 1; /* Garantir que fiquem visíveis inicialmente */
+}
+
+.nav-list li:hover {
+    opacity: 0.7;
 }
 
 /* Menu mobile */
 .mobile-menu {
     display: none;
     cursor: pointer;
+    transition: 0.3s ease;
 }
 
 .mobile-menu div {
@@ -93,7 +97,7 @@ nav {
     height: 2px;
     background: #fff;
     margin: 8px;
-    transition: 0.3s;
+    transition: 0.3s ease;
 }
 
 /* Estilo para o menu mobile */
@@ -104,21 +108,27 @@ nav {
 
     .nav-list {
         position: absolute;
-        top: 8vh;  /* Ajuste para o topo da página */
+        top: 8vh;
         right: 0;
-        width: 25vw;  /* Ocupa metade da tela no mobile */
+        width: 20vw; /* Reduz a largura do menu */
         height: 92vh;
         background: #000049;
         flex-direction: column;
         align-items: center;
         justify-content: space-around;
         transform: translateX(100%);
-        transition: transform 0.3s ease-in;
+        transition: transform 0.4s ease-out;
+        padding-top: 50px;
+        visibility: hidden; /* Ocultar por padrão */
+    }
+
+    .nav-list.active {
+        transform: translateX(0);
+        visibility: visible; /* Visível quando o menu está ativo */
     }
 
     .nav-list li {
         margin-left: 0;
-        opacity: 1;
     }
 
     .mobile-menu {
@@ -132,37 +142,21 @@ nav {
     transform: translateX(0);
 }
 
-/* Animação de fade para os links */
-.nav-list li {
-    list-style: none;
-    opacity: 1;
-}
-
-.nav-list li.active {
-    opacity: 1;
-    animation: navLinkFade 0.5s ease forwards;
-}
-
-@keyframes navLinkFade {
-    from {
-        opacity: 1;
-        transform: translateX(50px);
-    }
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
-}
-
 /* Animação do ícone do menu no mobile */
 .mobile-menu.active .line1 {
     transform: rotate(-45deg) translate(-8px, 8px);
 }
 
 .mobile-menu.active .line2 {
-    opacity: 1;
+    opacity: 0;
 }
 
 .mobile-menu.active .line3 {
     transform: rotate(45deg) translate(-5px, -7px);
+}
+
+/* Efeito de foco acessível nos links */
+a:focus {
+    outline: 3px solid #fff;
+    outline-offset: 2px;
 }
