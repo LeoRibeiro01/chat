@@ -130,34 +130,6 @@ class App {
                 }
             });
 
-            // Editar mensagem em uma sala
-            socket.on('editMessage', ({ roomId, messageId, newMessage }) => {
-                const roomObj = this.rooms.find(r => r.name === roomId);
-                if (roomObj) {
-                    const messageObj = roomObj.messages.find(m => m.id === messageId);
-                    if (messageObj && messageObj.username === socket.username) {
-                        messageObj.message = newMessage;  // Atualiza a mensagem
-                        this.io.to(roomId).emit('messageEdited', { messageId, newMessage });  // Notifica todos sobre a edição
-                    }
-                }
-            });
-
-            // Excluir mensagem de uma sala
-            socket.on('deleteMessage', ({ roomId, messageId }) => {
-                const roomObj = this.rooms.find(r => r.name === roomId);
-                if (roomObj) {
-                    roomObj.messages = roomObj.messages.filter(m => m.id !== messageId);  // Remove a mensagem da sala
-                    this.io.to(roomId).emit('messageDeleted', { messageId });  // Notifica todos sobre a exclusão
-                }
-            });
-
-            // Excluir uma sala
-            socket.on('deleteRoom', (roomId) => {
-                this.rooms = this.rooms.filter(r => r.name !== roomId);  // Remove a sala
-                this.io.emit('roomsList', this.rooms);  // Atualiza a lista de salas para todos
-                this.io.to(roomId).emit('roomDeleted');  // Notifica todos sobre a exclusão da sala
-            });
-
             // Desconectar o usuário
             socket.on('disconnect', () => {
                 console.log(`${socket.username || socket.id} disconnected`);

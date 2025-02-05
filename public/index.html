@@ -80,11 +80,6 @@
             <input type="file" id="imageInput" style="display: none;" accept="image/*" />
         </form>
     </div>
-    <!-- Menu de contexto para edição e exclusão -->
-<div id="contextMenu" class="context-menu" style="display: none;">
-    <button id="editMessageButton">Editar</button>
-    <button id="deleteMessageButton">Excluir</button>
-</div>
 
     <!-- Modal para exibição de imagem -->
     <div id="imageModal" class="modal" style="display:none;">
@@ -158,18 +153,6 @@
         let username;
         let currentRoom = null;
         let isPrivateRoom = false;
-
-       
-
-        function deleteRoom(roomName) {
-            socket.emit('deleteRoom', { roomName }); // Envia a solicitação de exclusão da sala ao servidor
-        }
-
-        //Função de abrir opções com 2 cliques
-        function showOptions(messageElement) {
-        const options = messageElement.querySelector('.message-options');
-        options.style.display = 'flex'; // Mostra as opções
-        }
 
         // Tela de Login
         loginForm.addEventListener('submit', (e) => {
@@ -272,41 +255,6 @@
             }
         });
 
-         // Funções para editar mensagem, excluir mensagem e excluir sala
-        // Detecta o clique duplo em uma mensagem
-        document.addEventListener("DOMContentLoaded", () => {
-    const messageList = document.getElementById("messages");
-
-    if (!messageList) return;
-
-    messageList.addEventListener("dblclick", (event) => {
-        const messageElement = event.target.closest(".message"); // Garante que foi numa mensagem
-        if (!messageElement) return;
-
-        const messageId = messageElement.getAttribute("data-message-id");
-        if (!messageId) return;
-
-        const option = prompt("Opções:\n1 - EDITAR\n2 - EXCLUIR");
-
-        if (option === "1") {
-            const newMessage = prompt("Insira a nova mensagem:");
-            if (newMessage && newMessage.trim() !== "") {
-                editMessage(messageId, newMessage);
-                messageElement.textContent = newMessage; // Atualiza na tela sem precisar de recarregar
-            } else {
-                alert("Mensagem inválida!");
-            }
-        } else if (option === "2") {
-            const confirmDelete = confirm("Tem certeza que deseja excluir esta mensagem?");
-            if (confirmDelete) {
-                deleteMessage(messageId);
-                messageElement.remove(); // Remove a mensagem da tela imediatamente
-            }
-        }
-    });
-});
-
-
         // Enviar imagem
         sendImageButton.addEventListener('click', () => {
             imageInput.click(); // Aciona a seleção de arquivo de imagem
@@ -394,4 +342,4 @@
         });
     </script>
 </body>
-</html>
+</html> 
