@@ -103,3 +103,7 @@ yarn add tsx -D
 yarn dev
 
 npm run dev
+
+### Link do Youtube
+
+https://youtu.be/h-cZnldAjvg
