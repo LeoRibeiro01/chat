@@ -1,4 +1,4 @@
-# BlueTalk 
+# BlueTalk C
 
 Este é um aplicativo de chat em tempo real utilizando **Express** e **Socket.io**. Ele foi desenvolvido para ser executado em um ambiente de desenvolvimento local. Abaixo estão as etapas para rodar o código em sua máquina.
 
